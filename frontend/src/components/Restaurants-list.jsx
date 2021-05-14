@@ -11,7 +11,7 @@ const RestaurantsList = () => {
   const [searchBy, setSearchBy] = useState(null);
 
   const { data: allRestaurants, error: getRestaurantsError } = useSWR(
-    '?page=0',
+    '/restaurants?page=0',
     fetcher
   );
   const { data: cuisines, error: getCuisinesError } = useSWR(

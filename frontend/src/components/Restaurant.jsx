@@ -6,7 +6,7 @@ import { deleteReview, fetcher } from 'utils/utils';
 const Restaurant = props => {
   const { id } = props.match.params;
 
-  const { data: restaurant, error } = useSWR(`/id/${id}`, fetcher);
+  const { data: restaurant, error } = useSWR(`/restaurant?id=${id}`, fetcher);
 
   if (error) return <div>Error getting restaurant...</div>;
   if (!restaurant) return <div>Loading...</div>;
@@ -14,7 +14,7 @@ const Restaurant = props => {
   const handleDeleteReview = async (e, reviewId) => {
     e.preventDefault();
     mutate(
-      `/id/${id}`,
+      `/restaurant?id=${id}`,
       {
         ...restaurant,
         reviews: restaurant.reviews.filter(review => review._id !== reviewId),
@@ -22,7 +22,7 @@ const Restaurant = props => {
       false
     );
     await deleteReview(reviewId, props.user.id);
-    mutate(`/id/${id}`);
+    mutate(`/restaurant?id=${id}`);
   };
 
   return (
