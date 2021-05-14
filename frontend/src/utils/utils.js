@@ -2,7 +2,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api/v1/restaurants',
+  baseURL: process.env.REACT_APP_MONGO_REAL_BASE_URL,
   headers: { 'Content-type': 'application/json' },
 });
 
@@ -10,7 +10,7 @@ export const fetcher = url => axiosInstance.get(url).then(res => res.data);
 
 export const useRestaurants = (by, query) => {
   const { data, error } = useSWR(
-    !by || !query ? null : `?${by}=${query}`,
+    !by || !query ? null : `/restaurants?${by}=${query}`,
     fetcher
   );
 
@@ -22,10 +22,10 @@ export const useRestaurants = (by, query) => {
 };
 
 export const deleteReview = (reviewId, userId) =>
-  axiosInstance.delete(`/review?id=${reviewId}`, {
+  axiosInstance.delete(`/review-delete?id=${reviewId}`, {
     data: { user_id: userId },
   });
 
-export const updateReview = review => axiosInstance.put('/review', review);
+export const updateReview = review => axiosInstance.put('/review-edit', review);
 
-export const createReview = review => axiosInstance.post('/review', review);
+export const createReview = review => axiosInstance.post('/review-new', review);
